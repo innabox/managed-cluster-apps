@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: managed-cluster-config
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/innabox/managed-cluster-config
+    path: cluster-scope/overlays/hypershift1
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      selfHeal: true

@@ -1,0 +1,40 @@
+# This is an example of an argocd application. It deploys
+# a very simple web service at http://whoami.apps.hypershift1.nerc.mghpcc.org.
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: whoami
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+
+    # This namespace is where argocd will place namedspaced resources
+    # that do not have a namespace explicitly defined.
+    namespace: default
+  project: default
+  source:
+    # It is possible to apply kustomizations directly in the application
+    # manifest, making it possible to consume third-party repositories
+    # while still providing local configuration changes.
+    kustomize:
+      patches:
+      - patch: |
+          - op: replace
+            path: /spec/rules/0/host
+            value: whoami.apps.hypershift1.nerc.mghpcc.org
+        target:
+          kind: Ingress
+          name: whoami
+    repoURL: https://github.com/larsks/k8s-whoami
+    path: .
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      # Setting `prune: true` will cause argocd to delete resources when they
+      # are removed from your manifests.
+      prune: true
+
+      # Setting `selfheal: true` will cause argocd to re-apply resources that have
+      # been modified in the cluster.
+      selfHeal: true
