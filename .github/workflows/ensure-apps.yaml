@@ -1,0 +1,12 @@
+name: ensure-apps
+
+on:
+  pull_request:
+
+jobs:
+  ensure-apps:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: |
+        bash ci/ensure-apps.sh
