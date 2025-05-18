@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault-operator
+spec:
+  destination:
+    namespace: vault-operator
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/innabox/managed-cluster-config
+    path: vault/operator/overlays/hypershift1
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+spec:
+  destination:
+    namespace: vault
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/innabox/managed-cluster-config
+    path: vault/instance/overlays/hypershift1
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
