@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fulfillment-aap
+spec:
+  destination:
+    namespace: fulfillment-aap
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/innabox/managed-cluster-config
+    path: fulfillment-aap/overlays/hypershift1
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
