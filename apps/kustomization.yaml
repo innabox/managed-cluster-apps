@@ -7,12 +7,11 @@ resources:
 - openshift-gitops.yaml
 - root-app.yaml
 - vault.yaml
+- fulfillment-aap.yaml
 
 # Apply some common sync options
 patches:
-- target:
-    kind: Application
-  patch: |
+- patch: |
     - op: add
       path: /spec/syncPolicy/syncOptions
       value:
@@ -20,3 +19,5 @@ patches:
     - op: add
       path: /spec/syncPolicy/automated/selfHeal
       value: true
+  target:
+    kind: Application
