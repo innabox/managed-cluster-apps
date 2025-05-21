@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloudkit-operator-config
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: cloudkit-operator-system
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/innabox/cloudkit-operator-config.git
+    path: .
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
